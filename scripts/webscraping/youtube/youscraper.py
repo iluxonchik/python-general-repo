@@ -4,32 +4,42 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import sys, io, argparse
 
-def getVideoTitle(bsObj):
+def get_video_title(bsObj):
 	"""
 	Returns the video title
 	"""
 	# TODO
 
-def getVideoDescription(bsObj):
+def get_video_description(bsObj):
 	"""
 	Returns the video description
 	"""
 	# TODO
 	# <meta name="description" 
 
-def getVideoTags(bsObj):
+def get_video_tags(bsObj):
 	"""
 	Returns a list of video tags
 	"""
 	# TODO
-	# <meta name="keywords" 
+	# <meta property="og:video:tag" >
+	tags = bsObj.findAll("meta", {"property":"og:video:tag"})
+	#print(tags)
+	return get_text_on_list(tags, 'content')
 
-def getVideoLinks(url):
+
+def get_video_links(url):
 	"""
 	Returns a list of videos from a page
 	"""
 	# TODO
 
+def get_text_on_list(elems, attr):
+	"""
+	Recieves a collection of BS objects, retrieves "attr" attribute from each one of them 
+	and returns the resulting list
+	"""
+	return [elem.attrs[attr] for elem in elems if elem.attrs[attr] is not None]
 
 def positive_check(value:str):
 	"""
@@ -48,3 +58,7 @@ if __name__  == '__main__':
 	parser.add_argument('-o', '--out', help='output file name', dest='filename', type=str)
 	parser.add_argument('-p', '--pages', help='number of pages to parse (starting from page 1)', type=positive_check, default=1)
 	args = parser.parse_args()
+
+	html = urlopen(args.search)
+	bsObj = BeautifulSoup(html, "html.parser")
+
