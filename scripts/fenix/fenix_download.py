@@ -45,8 +45,8 @@ def main(url, login_file, file_ext, dl_dir):
     
     for anchor in anchors:
         dl_path = get_download_path(dl_dir, anchor['href'])
-        print('Downloading ' + dl_path + " ...")
-        download_file(fenix, anchor['href'], dl_path)
+        print('Downloading ' + dl_path + "...")
+        download_file(fenix, anchor['href'].replace(" ","+"), dl_path)
 
 if __name__ == '__main__':
     # TODO: argparse
